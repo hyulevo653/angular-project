@@ -1,0 +1,505 @@
+<div><app-header></app-header>
+    <div class="content">
+        <div class="container-fluid">
+          <div class="row p-4">
+            <div class="col-12 col-md-3">
+              <div class="box1">
+                <p class="title-box">Tìm kiếm thiết bị</p>
+                <div>
+                  <div class="input-wrapper">
+                    <img
+                      src="assets/images/ComacPro 2/vuesax/linear/search-normal.svg"
+                      alt="search-icon"
+                      class="input-icon"
+                    />
+                    <input
+                      class="input p-input"
+                      type="text"
+                      (change)="changeText($event)"
+                      (keyup.enter)="onSearch($event)"
+                      placeholder="Scissor Lift"
+                    />
+                  </div>
+                  <div class="input-wrapper">
+                    <img
+                      src="assets/images/ComacPro 3/vuesax/linear/vuesax/linear/location.png"
+                      alt="search-icon"
+                      class="input-icon"
+                    />
+                    <input
+                      class="input p-input"
+                      type="text"
+                      placeholder="Hà Nội"
+                    />
+                  </div>
+                  <div class="input-wrapper">
+                    <img
+                      src="assets/images/ComacPro 5/vuesax/linear/verify.png"
+                      alt="search-icon"
+                      class="input-icon"
+                    />
+                    <select class="input p-input custom-select bg-white">
+                      <option value="new" selected>Mới chưa sử dụng</option>
+                      <option value="used">Đã qua sử dụng</option>
+                      <option value="refurbished">Hàng tân trang</option>
+                    </select>
+                    <img
+                      src="assets/images/ComacPro 4/vuesax/linear/vuesax/linear/arrow-down.png"
+                      alt="search-icon"
+                      class="input-icon-left"
+                    />
+                  </div>
+                  <button class="button input-wrapper bg-btn-box1" (click)="onSearchbtn()">
+                    Tìm kiếm
+                  </button>
+                </div>
+              </div>
+  
+              <div class="box2 border mt-3">
+                <p class="title-box">Thương hiệu</p>
+                <div class="content-box2">
+                  <!-- Thay ID cho checkbox để tránh trùng lặp -->
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand1" />
+                    <label for="brand1" class="text-checkbox">Airman</label>
+                  </div>
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand2" />
+                    <label for="brand2" class="text-checkbox">Brand 2</label>
+                  </div>
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand3" />
+                    <label for="brand3" class="text-checkbox">Brand 3</label>
+                  </div>
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand4" />
+                    <label for="brand4" class="text-checkbox">Brand 4</label>
+                  </div>
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand5" />
+                    <label for="brand5" class="text-checkbox">Brand 5</label>
+                  </div>
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand5" />
+                    <label for="brand5" class="text-checkbox">Brand 5</label>
+                  </div>
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand5" />
+                    <label for="brand5" class="text-checkbox">Brand 5</label>
+                  </div>
+                  <div class="custom-checkbox d-flex align-items-center">
+                    <input type="checkbox" id="brand5" />
+                    <label for="brand5" class="text-checkbox">Brand 5</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="box3 mt-3">
+                <div class="input-wrapper-box3">
+                  <select class="input p-input custom-select bg-white">
+                    <option value="new" selected>Đời thiết bị</option>
+                    <option value="used">Đã qua sử dụng</option>
+                    <option value="refurbished">Mới</option>
+                  </select>
+                  <img
+                    src="assets/images/ComacPro 4/vuesax/linear/vuesax/linear/arrow-down.png"
+                    alt="search-icon"
+                    class="input-icon-left"
+                  />
+                </div>
+              </div>
+  
+              <div class="box4 border mt-3">
+                <p class="title-box">Khoảng giá</p>
+                <div class="box4-content">
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                    "
+                  >
+                  <input
+                    type="range"
+                    class="range-size"
+                    name="price-min"
+                    id="price-min"
+                    [value]="minValue"
+                    min="0"
+                    max="1000000000"
+                    style="--track-color: #ffc900; width: 100%"
+                    (input)="updateValue($event)"
+                    />
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                      "
+                    >
+                      <span id="min-value">{{minValue}}</span>
+                      <span id="max-value">1 tỷ</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="box4 border mt-3">
+                <p class="title-box">Năm sản xuất</p>
+                <div class="box4-content">
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                    "
+                  >
+                    <input
+                      type="range"
+                      class="range-size"
+                      name="year"
+                      id="year"
+                      [value]="minYear"
+                      min="1984"
+                      max="2024"
+                      style="--track-color: #ffc900; width: 100%"
+                      (input)="updateYear($event)"
+                    />
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                      "
+                    >
+                      <span id="year-min">{{minYear}}</span>
+                      <span id="year-max">2024</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-12 col-md-9">
+              <div class="">
+                <div class="title w-100">
+                  <div class="d-flex align-items-center">
+                    <img
+                      src="assets/images/Frame 427318218.png"
+                      alt=""
+                      class="check_frame"
+                    />
+                    <p class="title_text mx-2 mb-0">
+                      Việc mua thiết bị của bạn sẽ được bảo vệ bởi chế độ bảo hành
+                      mua thiết bị của ComacPro
+                    </p>
+                  </div>
+                </div>
+                <div class="pt-4 d-flex justify-content-between flex-wrap">
+                  <div class="p-2">
+                    <img src="assets/images/anh_1.png" alt="" class="img-fluid" />
+                  </div>
+                  <div class="p-2">
+                    <img src="assets/images/anh_2.png" alt="" class="img-fluid" />
+                  </div>
+                </div>
+                <div class="pt-4 d-flex justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <div class="custom-border-vertical"></div>
+                    <p class="title_cnt mb-0 mx-2">Danh sách thang nâng</p>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <img src="assets/images/vuesax.png" class="mx-2 cursor-pointer" />
+                    <img
+                      src="assets/images/ComacPro 8/vuesax/bold/element-3.png"
+                      class="cursor-pointer"
+                    />
+                  </div>
+                </div>
+                <div class="pt-2">
+                  <div class="box_content_main">
+                    <div *ngIf="isLoading" class="loading-indicator">
+                            <div class="loading-spinner">
+                                <p>Loading...</p>
+                            </div>
+                      </div>
+                      
+                      <div *ngIf="!isLoading">
+                        <div class="product-list">
+                          <div class="row">
+                            <div class="col-4 p-2" *ngFor="let item of paginatedData">
+                              <div class="box_img_pro">
+                                <img src="{{ item.img }}" alt="" class="img-product w-100" />
+                              </div>
+                              <div class="box_content_product p-3 border-box_cnt">
+                                <div>
+                                  <p class="title_product">{{ item.name }}</p>
+                                </div>
+                                <div class="d-flex">
+                                  <img src="assets/images/location/vuesax/bold/location.png" alt="" class="location_img" />
+                                  <p class="text_location mx-2">{{ item.khuvuc }}</p>
+                                </div>
+                                <div>
+                                  <div class="d-flex justify-content-between">
+                                    <p class="text_status">Tình trạng</p>
+                                    <p class="text_status-b">{{ item.tinhtrang }}</p>
+                                  </div>
+                                  <div class="d-flex justify-content-between">
+                                    <p class="text_status">Tình trạng bàn giao</p>
+                                    <p class="text_status-b">{{ item.tgbangiao }}</p>
+                                  </div>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center">
+                                  <p class="text_status-b mb-0 mx-2 cursor-pointer">Xem thêm thông tin</p>
+                                  <img src="assets/images/ComacPro 7/vuesax/linear/arrow-right.png" alt="mui_ten" class="img_icon cursor-pointer" />
+                                </div>
+                                <div class="custom-border m-2"></div>
+                                <div class="d-flex align-items-end p-2">
+                                  <p class="price_text">{{ item.price | number }}</p>
+                                  <p class="vnd_text mx-1">VNĐ</p>
+                                </div>
+                                <div class="p-2">
+                                  <button class="button btn-sell">Mua ngay</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    <!-- <div class="">
+                      <div class="pt-2 pb-2 d-flex row">
+                        <div class="col-4 p-2" *ngFor="let item of data">
+                          <div class="box_img_pro">
+                            <img
+                              src="{{item.img}}"
+                              alt=""
+                              class="img-product w-100"
+                            />
+                          </div>
+                          <div class="box_content_product p-3 border-box_cnt">
+                            <div>
+                              <p class="title_product">
+                                {{item.name}}
+                              </p>
+                            </div>
+                            <div class="d-flex">
+                              <img
+                                src="assets/images/location/vuesax/bold/location.png"
+                                alt=""
+                                class="location_img"
+                              />
+                              <p class="text_location mx-2">{{item.khuvuc}}</p>
+                            </div>
+                            <div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng</p>
+                                <p class="text_status-b">{{item.tinhtrang}}</p>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng bàn giao</p>
+                                <p class="text_status-b">{{item.tgbangiao}}</p>
+                              </div>
+                            </div>
+                            <div
+                              class="d-flex justify-content-end align-items-center"
+                            >
+                              <p class="text_status-b mb-0 mx-2 cursor-pointer">
+                                Xem thêm thông tin
+                              </p>
+                              <img
+                                src="assets/images/ComacPro 7/vuesax/linear/arrow-right.png"
+                                alt="mui_ten"
+                                class="img_icon cursor-pointer"
+                              />
+                            </div>
+                            <div class="custom-border m-2"></div>
+                            <div class="d-flex align-items-end p-2">
+                              <p class="price_text">{{item.price}}</p>
+                              <p class="vnd_text mx-1">VNĐ</p>
+                            </div>
+                            <div class="p-2">
+                              <button class="button btn-sell">Mua ngay</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class="pt-2 paginator">
+                        <nav aria-label="Page navigation example">
+                          <ul class="pagination justify-content-center">
+                            <li class="page-item custom-page-item">
+                              <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item custom-page-item">
+                              <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item custom-page-item">
+                              <a class="page-link" href="#">3</a>
+                            </li>
+                            <li class="page-item disabled custom-page-item">
+                              <span class="page-link">...</span>
+                            </li>
+                            <li class="page-item custom-page-item">
+                              <a class="page-link" href="#">8</a>
+                            </li>
+                            <li class="page-item custom-page-item">
+                              <a class="page-link" href="#">9</a>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
+                    <div class="box_cnt_2 pt-2 pb-2">
+                      <div class="d-flex align-items-center pb-2">
+                        <div class="custom-border-vertical"></div>
+                        <p class="title_cnt mb-0 mx-2">
+                          Khám phá các thiết bị khác
+                        </p>
+                      </div>
+                      <div class="pt-2 pb-2 d-flex row">
+                        <div class="col-3">
+                          <div class="box_img_pro">
+                            <img
+                              src="assets/images/anh_product.png"
+                              alt=""
+                              class="img-product w-100"
+                            />
+                          </div>
+                          <div class="box_content_product p-3 border-box_cnt">
+                            <div>
+                              <p class="title_product">
+                                2021 Spider 15.75 Pro Platform Basket Spider Lift
+                              </p>
+                            </div>
+                            <div class="d-flex">
+                              <img
+                                src="assets/images/location/vuesax/bold/location.png"
+                                alt=""
+                                class="location_img"
+                              />
+                              <p class="text_location mx-2">Hà Nội</p>
+                            </div>
+                            <div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng</p>
+                                <p class="text_status-b">Đã qua sử dụng</p>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng bàn giao</p>
+                                <p class="text_status-b">Sẵn sàng</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="box_img_pro">
+                            <img
+                              src="assets/images/anh_product.png"
+                              alt=""
+                              class="img-product w-100"
+                            />
+                          </div>
+                          <div class="box_content_product p-3 border-box_cnt">
+                            <div>
+                              <p class="title_product">
+                                2021 Spider 15.75 Pro Platform Basket Spider Lift
+                              </p>
+                            </div>
+                            <div class="d-flex">
+                              <img
+                                src="assets/images/location/vuesax/bold/location.png"
+                                alt=""
+                                class="location_img"
+                              />
+                              <p class="text_location mx-2">Hà Nội</p>
+                            </div>
+                            <div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng</p>
+                                <p class="text_status-b">Đã qua sử dụng</p>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng bàn giao</p>
+                                <p class="text_status-b">Sẵn sàng</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="box_img_pro">
+                            <img
+                              src="assets/images/anh_product.png"
+                              alt=""
+                              class="img-product w-100"
+                            />
+                          </div>
+                          <div class="box_content_product p-3 border-box_cnt">
+                            <div>
+                              <p class="title_product">
+                                2021 Spider 15.75 Pro Platform Basket Spider Lift
+                              </p>
+                            </div>
+                            <div class="d-flex">
+                              <img
+                                src="assets/images/location/vuesax/bold/location.png"
+                                alt=""
+                                class="location_img"
+                              />
+                              <p class="text_location mx-2">Hà Nội</p>
+                            </div>
+                            <div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng</p>
+                                <p class="text_status-b">Đã qua sử dụng</p>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng bàn giao</p>
+                                <p class="text_status-b">Sẵn sàng</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="box_img_pro">
+                            <img
+                              src="assets/images/anh_product.png"
+                              alt=""
+                              class="img-product w-100"
+                            />
+                          </div>
+                          <div class="box_content_product p-3 border-box_cnt">
+                            <div>
+                              <p class="title_product">
+                                2021 Spider 15.75 Pro Platform Basket Spider Lift
+                              </p>
+                            </div>
+                            <div class="d-flex">
+                              <img
+                                src="assetsassets/images/location/vuesax/bold/location.png"
+                                alt=""
+                                class="location_img"
+                              />
+                              <p class="text_location mx-2">Hà Nội</p>
+                            </div>
+                            <div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng</p>
+                                <p class="text_status-b">Đã qua sử dụng</p>
+                              </div>
+                              <div class="d-flex justify-content-between">
+                                <p class="text_status">Tình trạng bàn giao</p>
+                                <p class="text_status-b">Sẵn sàng</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<app-slick></app-slick>
+<app-footer></app-footer>
+</div>  

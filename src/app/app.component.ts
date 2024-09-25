@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, Routes } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +9,14 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  constructor(
+    private readonly router : Router
+  ){
+
+  }
   title = 'my-project';
+  url = "/"
+  Routing(){
+    this.router.navigate(['/search'])
+  }
 }

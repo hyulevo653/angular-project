@@ -1,21 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-.class-a{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.class-b{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-.class-c{
-    color: #ffc900;
-    width: 100%;
-}
-.class-d{
-    max-height: 43px;
-}
 .component {
     color: var(--bs-gray-800);
     background-color: var(--bs-gray-100);
@@ -396,7 +378,6 @@
   padding: 53px, 30px, 53px, 30px;
   gap: 184px
 }
-
 .img_slick{
   width: 200px;
   height: 31px;
