@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+.class-a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.class-b{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.class-c{
+    color: #ffc900;
+    width: 100%;
+}
+.class-d{
+    max-height: 43px;
+}
