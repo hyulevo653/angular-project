@@ -140,24 +140,7 @@ export class SearchComponent {
     ]
   }
 
-  onSearch(event:Event) {
-    this.isLoading = true; // Bắt đầu loading
-    const apiUrl = `http://localhost:3000/api/keyword-search/${this.inputText}`;
-    this.http.get(apiUrl).subscribe(
-      (response: any) => {
-        this.data = response.devices; // Nhận dữ liệu thiết bị
-        this.totalItems = response.count; // Nhận tổng số bản ghi
-      },
-      (error) => {
-        console.error('Error:', error);
-      },
-      () => {
-        this.isLoading = false; // Kết thúc loading
-      }
-    );
-  }
-
-  onSearchbtn(){
+  onSearch() {
     this.isLoading = true; // Bắt đầu loading
     const apiUrl = `http://localhost:3000/api/keyword-search/${this.inputText}`;
     this.http.get(apiUrl).subscribe(

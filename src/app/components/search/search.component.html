@@ -16,7 +16,7 @@
                       class="input p-input"
                       type="text"
                       (change)="changeText($event)"
-                      (keyup.enter)="onSearch($event)"
+                      (keyup.enter)="onSearch()"
                       placeholder="Scissor Lift"
                     />
                   </div>
@@ -49,7 +49,7 @@
                       class="input-icon-left"
                     />
                   </div>
-                  <button class="button input-wrapper bg-btn-box1" (click)="onSearchbtn()">
+                  <button class="button input-wrapper bg-btn-box1" (click)="onSearch()">
                     Tìm kiếm
                   </button>
                 </div>
