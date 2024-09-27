@@ -1,166 +1,111 @@
 import { Component } from '@angular/core';
-import { FooterComponent } from "../footer/footer.component";
-import { HeaderComponent } from "../header/header.component";
-import { SlickComponent } from "../slick/slick.component";
+import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
+import { SlickComponent } from '../slick/slick.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ApiService } from '../../services/api.service';
+import { TableModule } from 'primeng/table';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 
 interface ApiResponse {
-  devices: any[]; 
+  devices: any[];
 }
-
 
 @Component({
   selector: 'app-search',
   standalone: true,
   imports: [
-      CommonModule,
-      FooterComponent,
-      HeaderComponent,
-      SlickComponent,
-      SlickCarouselModule,
-      HttpClientModule,
+    CommonModule,
+    HttpClientModule,
+    FooterComponent,
+    HeaderComponent,
+    SlickComponent,
+    SlickCarouselModule,
+    TableModule,
   ],
-  providers: [],
+  providers: [ApiService],
   templateUrl: './search.component.html',
-  styleUrl: './search.component.scss'
+  styleUrls: ['./search.component.scss'],
 })
-
-
 export class SearchComponent {
-  data : any;
-  currentPage: number = 1;
-  itemsPerPage: number = 9;
+  defaultImg = 'assets/images/anh_product.png';
+  public data: any;
   totalItems: number = 0;
-  minValue: number = 500000000; 
+  minValue: number = 0;
   minYear: number = 1984;
   isLoading: boolean = false;
+  isNull: boolean = false;
+  pagedItems: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 9;
+  pages: number[] = [];
+  totalPages!: number;
+  errorMessage: string = '';
 
-  public inputText : string = '';
-  
+  public inputText: string = '';
+
   constructor(
-    // private readonly searchService : SearchService
-    private http: HttpClient
-  ){}
+    private http: HttpClient,
+    private readonly apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.data = [
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-      {
-        img : "assets/images/anh_product.png",
-        name : " 2021 Spider 15.75 Pro Platform Basket Spider Lift",
-        khuvuc : "Hà Nội",
-        namsx : "2020",
-        tinhtrang : "Đã Qua Sử Dụng",
-        tgbangiao : "Sẵn Sàng",
-        price : 900000,
-        brand_name : "Hitachi",
-      },
-     
-    ]
+    this.onSearch();
+    this.calculatePages();
   }
 
   onSearch() {
-    this.isLoading = true; // Bắt đầu loading
-    const apiUrl = `http://localhost:3000/api/keyword-search/${this.inputText}`;
-    this.http.get(apiUrl).subscribe(
-      (response: any) => {
-        this.data = response.devices; // Nhận dữ liệu thiết bị
-        this.totalItems = response.count; // Nhận tổng số bản ghi
+    this.isLoading = true;
+    const queryParams = {
+      keyword: this.inputText,
+      page: this.currentPage,
+    };
+
+    this.router.navigate(['/search'], {
+      queryParams: {
+        keyword: this.inputText,
+        page: this.currentPage,
       },
-      (error) => {
-        console.error('Error:', error);
-      },
-      () => {
-        this.isLoading = false; // Kết thúc loading
-      }
-    );
+    });
+
+    this.apiService
+      .searchData(queryParams)
+      .pipe(
+        catchError((error) => {
+          console.error('Error:', error);
+          this.isLoading = false;
+          if (error.status === 500) {
+            this.errorMessage = 'Đã xảy ra lỗi máy chủ. Vui lòng thử lại sau.';
+          } else {
+            this.errorMessage = 'Đã xảy ra lỗi. Vui lòng thử lại.';
+          }
+          return of({ devices: [], count: 0 });
+        })
+      )
+      .subscribe((response: any) => {
+        this.isLoading = false;
+        this.data = response.devices;
+        this.totalItems = response.count;
+        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+        if (response.count === 0) {
+          this.isNull = true;
+        } else this.isNull = false;
+      });
+  }
+
+  transform(value: number): string {
+    if (value == null) return '';
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
   changeText(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    this.inputText = inputElement.value; 
-    console.log(this.inputText)
+    this.inputText = inputElement.value;
+    console.log(this.inputText);
   }
 
   updateValue(event: Event) {
@@ -171,20 +116,52 @@ export class SearchComponent {
   }
   updateYear(event: Event) {
     const inputElement = event.target as HTMLInputElement | null;
-    if(inputElement){
-      this.minYear = +inputElement.value
+    if (inputElement) {
+      this.minYear = +inputElement.value;
     }
   }
-  get paginatedData() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.data.slice(startIndex, startIndex + this.itemsPerPage);
-  }
 
-  setPage(page: number) {
+  calculatePages() {
+    const totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+    this.pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  onPageChange(page: number) {
+    this.isLoading = true;
     this.currentPage = page;
+    this.onSearch();
   }
 
-  totalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage);
+  onConditionChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const condition = selectElement.value;
+    this.callApiWithCondition(condition);
+    let currentUrl = this.router.url;
+    if (currentUrl.includes('?')) {
+      currentUrl += `&condition=${condition}`;
+    } else {
+      currentUrl += `?condition=${condition}`;
+    }
+    this.router.navigateByUrl(currentUrl);
+  }
+
+  callApiWithCondition(condition: string) {
+    const queryParams = {
+      condition: condition,
+    };
+
+    this.apiService.searchData(queryParams).subscribe(
+      (response: any) => {
+        this.isLoading = false;
+        this.data = response.devices;
+        this.totalItems = response.count;
+        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+        if (response.count === 0) {
+          this.isNull = true;
+        } else this.isNull = false;
+      },
+      (error) => {
+        console.error('Error:', error);
+      }
+    );
   }
 }

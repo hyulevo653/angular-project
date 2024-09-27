@@ -96,10 +96,10 @@
   
               <div class="box3 mt-3">
                 <div class="input-wrapper-box3">
-                  <select class="input p-input custom-select bg-white">
-                    <option value="new" selected>Đời thiết bị</option>
-                    <option value="used">Đã qua sử dụng</option>
-                    <option value="refurbished">Mới</option>
+                  <select class="input p-input custom-select bg-white" (change)="onConditionChange($event)">
+                    <option value="new" disabled  selected>Đời thiết bị</option>
+                    <option value="Mới">Mới</option>
+                    <option value="Cũ">Cũ</option>
                   </select>
                   <img
                     src="assets/images/ComacPro 4/vuesax/linear/vuesax/linear/arrow-down.png"
@@ -223,30 +223,40 @@
                                 <p>Loading...</p>
                             </div>
                       </div>
+                      <div *ngIf="errorMessage !== ''" class="alert alert-danger">
+                        {{ errorMessage }}
+                      </div>
+                      <div *ngIf="isNull" class="loading-indicator">
+                        <h1 class="text-danger align-content-center text-center p-5">Không tìm thấy kết quả...</h1>
+                      </div>
                       
                       <div *ngIf="!isLoading">
                         <div class="product-list">
                           <div class="row">
-                            <div class="col-4 p-2" *ngFor="let item of paginatedData">
+                            <div class="col-4 p-2" *ngFor="let item of data">
                               <div class="box_img_pro">
-                                <img src="{{ item.img }}" alt="" class="img-product w-100" />
+                                <img 
+                                [src]="item.img ? item.img : defaultImg" 
+                                alt="" 
+                                class="img-product w-100" 
+                                />
                               </div>
                               <div class="box_content_product p-3 border-box_cnt">
                                 <div>
-                                  <p class="title_product">{{ item.name }}</p>
+                                  <p class="title_product">{{ item.product_name }}</p>
                                 </div>
                                 <div class="d-flex">
                                   <img src="assets/images/location/vuesax/bold/location.png" alt="" class="location_img" />
-                                  <p class="text_location mx-2">{{ item.khuvuc }}</p>
+                                  <p class="text_location mx-2">{{ item.city }}</p>
                                 </div>
                                 <div>
                                   <div class="d-flex justify-content-between">
                                     <p class="text_status">Tình trạng</p>
-                                    <p class="text_status-b">{{ item.tinhtrang }}</p>
+                                    <p class="text_status-b">{{ item.p_condition }}</p>
                                   </div>
                                   <div class="d-flex justify-content-between">
                                     <p class="text_status">Tình trạng bàn giao</p>
-                                    <p class="text_status-b">{{ item.tgbangiao }}</p>
+                                    <p class="text_status-b">{{ item.delivery_status }}</p>
                                   </div>
                                 </div>
                                 <div class="d-flex justify-content-end align-items-center">
@@ -255,7 +265,7 @@
                                 </div>
                                 <div class="custom-border m-2"></div>
                                 <div class="d-flex align-items-end p-2">
-                                  <p class="price_text">{{ item.price | number }}</p>
+                                  <p class="price_text">{{  transform(item.price) }}</p>
                                   <p class="vnd_text mx-1">VNĐ</p>
                                 </div>
                                 <div class="p-2">
@@ -265,65 +275,27 @@
                             </div>
                           </div>
                         </div>
-                    <!-- <div class="">
-                      <div class="pt-2 pb-2 d-flex row">
-                        <div class="col-4 p-2" *ngFor="let item of data">
-                          <div class="box_img_pro">
-                            <img
-                              src="{{item.img}}"
-                              alt=""
-                              class="img-product w-100"
-                            />
-                          </div>
-                          <div class="box_content_product p-3 border-box_cnt">
-                            <div>
-                              <p class="title_product">
-                                {{item.name}}
-                              </p>
-                            </div>
-                            <div class="d-flex">
-                              <img
-                                src="assets/images/location/vuesax/bold/location.png"
-                                alt=""
-                                class="location_img"
-                              />
-                              <p class="text_location mx-2">{{item.khuvuc}}</p>
-                            </div>
-                            <div>
-                              <div class="d-flex justify-content-between">
-                                <p class="text_status">Tình trạng</p>
-                                <p class="text_status-b">{{item.tinhtrang}}</p>
-                              </div>
-                              <div class="d-flex justify-content-between">
-                                <p class="text_status">Tình trạng bàn giao</p>
-                                <p class="text_status-b">{{item.tgbangiao}}</p>
-                              </div>
-                            </div>
-                            <div
-                              class="d-flex justify-content-end align-items-center"
-                            >
-                              <p class="text_status-b mb-0 mx-2 cursor-pointer">
-                                Xem thêm thông tin
-                              </p>
-                              <img
-                                src="assets/images/ComacPro 7/vuesax/linear/arrow-right.png"
-                                alt="mui_ten"
-                                class="img_icon cursor-pointer"
-                              />
-                            </div>
-                            <div class="custom-border m-2"></div>
-                            <div class="d-flex align-items-end p-2">
-                              <p class="price_text">{{item.price}}</p>
-                              <p class="vnd_text mx-1">VNĐ</p>
-                            </div>
-                            <div class="p-2">
-                              <button class="button btn-sell">Mua ngay</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    </div> 
+                    <div class="pagination">
+                      <ng-container *ngIf="totalItems > itemsPerPage">
+                        <button 
+                          *ngFor="let page of [].constructor(totalPages); let i = index" 
+                          (click)="onPageChange(i + 1)" 
+                          [class.active]="currentPage === (i + 1)">
+                          {{ i + 1 }}
+                        </button>
+                      </ng-container>
+                    </div>
+                    <!-- <div class="pt-2 paginator">
+                      <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                          <li class="page-item custom-page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+                            <a class="page-link" href="#" (click)="setPage(page)">{{ page }}</a>
+                          </li>
+                        </ul>
+                      </nav>
                     </div> -->
-                    <div class="pt-2 paginator">
+                    <!-- <div class="pt-2 paginator">
                         <nav aria-label="Page navigation example">
                           <ul class="pagination justify-content-center">
                             <li class="page-item custom-page-item">
@@ -346,7 +318,7 @@
                             </li>
                           </ul>
                         </nav>
-                      </div>
+                      </div> -->
                     <div class="box_cnt_2 pt-2 pb-2">
                       <div class="d-flex align-items-center pb-2">
                         <div class="custom-border-vertical"></div>
