@@ -114,6 +114,10 @@ export class SearchComponent {
     this.isRow = !this.isRow; 
     this.isColumn = !this.isColumn; 
   }
+  checkRow(){
+    this.isRow = !this.isRow; 
+    this.isColumn = !this.isColumn; 
+  }
 
   transform(value: number): string {
     if (value == null) return '';
