@@ -10,7 +10,22 @@
     color: #007bff;
   }
   .img-product{
-    height: 218.18px;
+    height: 218px;
+    margin: 0;
+    object-fit: cover;
+  }
+
+  .btn-sell{
+    padding: 9px, 20px, 9px, 20px;
+    background-color: #FFA21A;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    // height: 45px;
+    font-family: 'Inter',sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 27px;
   }
 
   .pagination {
@@ -42,3 +57,141 @@
       }
     }
   }
+
+  @media (max-width: 768px) {
+    .title_product {
+      font-size: 16px;
+    }
+  
+    .text_location,
+    .text_status,
+    .text_status-b {
+      font-size: 14px;
+    }
+  
+    .price_text {
+      font-size: 1rem;
+    }
+  
+    .vnd_text {
+      font-size: 1rem;
+    }
+  
+    .btn-sell {
+      font-size: 12px;
+      padding: 8px 12px;
+    }
+  
+    .img-product {
+      height: auto;
+      width: 100%;
+    }
+  
+    .custom-border {
+      margin: 0;
+    }
+    .p-2 {
+      padding: 0.25rem; 
+    }
+  
+    .p-3 {
+      padding: 0.5rem; 
+    }
+  }
+
+
+  .border-box-c-12{
+    border: 1px solid #ccc; /* Thay đổi màu sắc border nếu cần */
+    border-radius: 10px;
+    padding: 10px
+  }
+  .title_product {
+  font-size: 1.2rem; /* Kích thước chữ vừa phải */
+  white-space: nowrap; /* Không cho xuống dòng */
+  overflow: hidden; /* Ẩn phần tràn */
+  text-overflow: ellipsis; /* Thêm dấu ba chấm nếu bị tràn */
+}
+
+/* Định dạng giá tiền */
+.price_text {
+  font-size: 1rem;
+  white-space: nowrap; /* Kích thước chữ lớn hơn cho giá */
+}
+
+.vnd_text {
+  font-size: 1rem; /* Kích thước chữ nhỏ cho đơn vị */
+}
+
+/* Thay đổi khoảng cách padding cho điện thoại */
+.p-2 {
+  padding: 0.5rem; /* Khoảng cách nhỏ hơn cho màn hình nhỏ */
+}
+
+.p-3 {
+  padding: 1rem; /* Khoảng cách vừa cho màn hình lớn hơn */
+}
+
+///aaa
+.title_product {
+  font-size: 1.2rem; /* Kích thước chữ vừa phải */
+  white-space: nowrap; /* Không cho xuống dòng */
+  overflow: hidden; /* Ẩn phần tràn */
+  text-overflow: ellipsis; /* Thêm dấu ba chấm nếu bị tràn */
+}
+
+
+/* Định dạng giá tiền */
+.price_text {
+  font-size: 1.5rem; /* Kích thước chữ lớn hơn cho giá */
+}
+
+.vnd_text {
+  font-size: 1rem; /* Kích thước chữ nhỏ cho đơn vị */
+}
+
+/* Thay đổi khoảng cách padding cho điện thoại */
+.p-2 {
+  padding: 0.5rem; /* Khoảng cách nhỏ hơn cho màn hình nhỏ */
+}
+
+.p-3 {
+  padding: 1rem; /* Khoảng cách vừa cho màn hình lớn hơn */
+}
+
+
+///range
+.slider-container {
+  position: relative;
+  width: 300px;
+}
+
+input[type="range"] {
+  position: absolute;
+  pointer-events: none; /* Loại bỏ tương tác trực tiếp với slider phía dưới */
+  width: 100%;
+  height: 5px;
+  -webkit-appearance: none;
+  background: transparent;
+  z-index: 2; /* Để slider nằm trên cùng */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto; /* Kích hoạt lại tương tác với thumb */
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffc900;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+input[type="range"]:nth-child(1)::-webkit-slider-thumb {
+  z-index: 3; /* Đảm bảo thumb bên trái luôn nằm trên */
+}
+
+.values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+

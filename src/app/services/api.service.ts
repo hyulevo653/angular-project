@@ -8,7 +8,7 @@ import { map } from 'rxjs';
 })
 export class ApiService {
 
-  private urlApi : string = " http://localhost:3000/api/keyword-search"
+  private urlApi : string = " http://localhost:3000/api/product-search"
 
   constructor(private http: HttpClient) { }
 

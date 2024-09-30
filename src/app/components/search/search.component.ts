@@ -9,6 +9,7 @@ import { ApiService } from '../../services/api.service';
 import { TableModule } from 'primeng/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 interface ApiResponse {
   devices: any[];
@@ -25,17 +26,27 @@ interface ApiResponse {
     SlickComponent,
     SlickCarouselModule,
     TableModule,
+    FormsModule,
   ],
   providers: [ApiService],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
+
+  minPrice: number = 0;     // Giá trị nhỏ nhất cho slider
+  maxPrice: number = 1000000000;   // Giá trị lớn nhất cho slider
+  minValuePrice: number = 0;  // Giá trị khởi tạo cho min
+  maxValuePrice : number = 1000000000;  // Giá trị khởi tạo cho max
+
+  
+  minYear: number = 1984;     // Giá trị nhỏ nhất cho slider
+  maxYear: number = 2024;   // Giá trị lớn nhất cho slider
+  minValueYear: number = 1984;  // Giá trị khởi tạo cho min
+  maxValueYear : number = 2024;  // Giá trị khởi tạo cho max
   defaultImg = 'assets/images/anh_product.png';
   public data: any;
   totalItems: number = 0;
-  minValue: number = 0;
-  minYear: number = 1984;
   isLoading: boolean = false;
   isNull: boolean = false;
   pagedItems: any[] = [];
@@ -44,6 +55,8 @@ export class SearchComponent {
   pages: number[] = [];
   totalPages!: number;
   errorMessage: string = '';
+  isRow : boolean = true;
+  isColumn : boolean = false;
 
   public inputText: string = '';
 
@@ -83,7 +96,7 @@ export class SearchComponent {
           } else {
             this.errorMessage = 'Đã xảy ra lỗi. Vui lòng thử lại.';
           }
-          return of({ devices: [], count: 0 });
+          return of({ devices: []});
         })
       )
       .subscribe((response: any) => {
@@ -97,6 +110,11 @@ export class SearchComponent {
       });
   }
 
+  checkColumn(){
+    this.isRow = !this.isRow; 
+    this.isColumn = !this.isColumn; 
+  }
+
   transform(value: number): string {
     if (value == null) return '';
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -108,12 +126,6 @@ export class SearchComponent {
     console.log(this.inputText);
   }
 
-  updateValue(event: Event) {
-    const inputElement = event.target as HTMLInputElement | null;
-    if (inputElement) {
-      this.minValue = +inputElement.value;
-    }
-  }
   updateYear(event: Event) {
     const inputElement = event.target as HTMLInputElement | null;
     if (inputElement) {
@@ -129,6 +141,7 @@ export class SearchComponent {
     this.isLoading = true;
     this.currentPage = page;
     this.onSearch();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   onConditionChange(event: Event) {
@@ -136,14 +149,11 @@ export class SearchComponent {
     const condition = selectElement.value;
     this.callApiWithCondition(condition);
     let currentUrl = this.router.url;
-    if (currentUrl.includes('?')) {
-      currentUrl += `&condition=${condition}`;
-    } else {
-      currentUrl += `?condition=${condition}`;
-    }
-    this.router.navigateByUrl(currentUrl);
+    const urlParams = new URLSearchParams(currentUrl.split('?')[1]);
+    urlParams.set('condition', condition);
+    const newUrl = `${currentUrl.split('?')[0]}?${urlParams.toString()}`;
+    this.router.navigateByUrl(newUrl);
   }
-
   callApiWithCondition(condition: string) {
     const queryParams = {
       condition: condition,
@@ -164,4 +174,47 @@ export class SearchComponent {
       }
     );
   }
+
+    // Cập nhật giá trị min khi người dùng tương tác
+    updateMinValue() {
+      if (this.minValuePrice > this.maxValuePrice) {
+        this.minValuePrice = this.maxValuePrice;
+      }
+    }
+  
+    // Cập nhật giá trị max khi người dùng tương tác
+    updateMaxValue() {
+      if (this.maxValuePrice < this.minValuePrice) {
+        this.maxValuePrice = this.minValuePrice;
+      }
+    }
+  
+    // Cập nhật style cho thanh trượt
+    get trackStyle() {
+      const minPercentPrice = ((this.minValuePrice - this.minPrice) / (this.maxPrice - this.minPrice)) * 100;
+      const maxPercentPrice = ((this.maxValuePrice - this.minPrice) / (this.maxPrice - this.minPrice)) * 100;
+      return `background: linear-gradient(to right, #ffc900 ${minPercentPrice}%, #ffc900 ${minPercentPrice}%, #ffc900 ${maxPercentPrice}%, #ffc900 ${maxPercentPrice}%);`;
+    }
+
+      // Cập nhật giá trị min khi người dùng tương tác
+      updateMinValueYear() {
+        if (this.minValueYear > this.maxValueYear) {
+          this.minValueYear = this.maxValueYear;
+        }
+      }
+    
+      // Cập nhật giá trị max khi người dùng tương tác
+      updateMaxValueYear() {
+        if (this.maxValueYear < this.minValueYear) {
+          this.maxValueYear = this.minValueYear;
+        }
+      }
+    
+      // Cập nhật style cho thanh trượt
+      get trackStyleYear() {
+        const minPercentYear = ((this.minValuePrice - this.minPrice) / (this.maxPrice - this.minPrice)) * 100;
+        const maxPercentYear = ((this.maxValuePrice - this.minPrice) / (this.maxPrice - this.minPrice)) * 100;
+        return `background: linear-gradient(to right, #ffc900 ${minPercentYear}%, #ffc900 ${minPercentYear}%, #ffc900 ${maxPercentYear}%, #ffc900 ${maxPercentYear}%);`;
+      }
+  
 }

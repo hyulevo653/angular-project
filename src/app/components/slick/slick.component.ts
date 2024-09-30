@@ -30,7 +30,23 @@ export class SlickComponent {
     slidesToScroll: 1,
     autoplay: true,       
     autoplaySpeed: 4000,  
-    infinite: true        
+    infinite: true ,
+    responsive: [
+      {
+        breakpoint: 768, // Tablet and smaller
+        settings: {
+          slidesToShow: 2, // Show 2 slides
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480, // Mobile
+        settings: {
+          slidesToShow: 1, // Show 1 slide
+          slidesToScroll: 1,
+        },
+      },
+    ],       
   };
   
   addSlide() {

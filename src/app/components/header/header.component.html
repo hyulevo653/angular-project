@@ -1,79 +1,65 @@
-<div class="header">
-    <div class="container-fluid">
-      <div class="row align-items-center p-3">
-        <div class="col-12 col-md-8 d-flex align-items-center">
-          <div class="p-2">
-            <img
-              [src]="imagePath"
-              alt=""
-              class="img-fluid"
-              style="max-height: 43px"
-            />
-          </div>
-          <div class="d-inline-flex align-items-center flex-wrap">
+<header>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light mt-4">
+    <div class="container-fluid d-flex align-items-center mx-2 mx-md-5">
+      <a class="navbar-brand" href="#">
+        <img src="assets/images/Layer_1.png" alt="Logo" />
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-lg-between" id="navbarNav">
+        <ul class="navbar-nav me-auto flex-wrap my-4 my-lg-0">
+          <li class="nav-item">
             <a
-              href="/"
-              class="mx-2 my-1 text-decoration-none text-dark f-w-600 bg-highlight"
+              class="nav-link fw-bold px-4 active"
+              aria-current="page"
+              href="#"
               >Bán</a
             >
-            <a
-              href="/"
-              class="mx-2 my-1 text-decoration-none text-dark f-w-600"
-              >Cho thuê</a
-            >
-            <a
-              href="/"
-              class="mx-2 my-1 text-decoration-none text-dark f-w-600"
-              >Danh mục</a
-            >
-            <a
-              href="/"
-              class="mx-2 my-1 text-decoration-none text-dark f-w-600"
-              >Blogs</a
-            >
-            <a
-              href="/"
-              class="mx-2 my-1 text-decoration-none text-dark f-w-600"
-              >FAQ</a
-            >
-            <a
-              href="/"
-              class="mx-2 my-1 text-decoration-none text-dark f-w-600"
-              >Về chúng tôi</a
-            >
-          </div>
-        </div>
-        <div
-          class="col-12 col-md-4 d-flex justify-content-end align-items-center mt-2 mt-md-0"
-        >
-          <button class="mx-2 border-0 bg-white">
-            <a href="#">
-              <img
-                src="assets/images/Nomal button.png"
-                alt=""
-                class="img-fluid"
-                style="max-height: 43px"
-              />
-            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold px-4" href="#">Cho thuê</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold px-4" href="#">Danh mục</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold px-4" href="#">Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold px-4" href="#">FAQ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold px-4" href="#">Về chúng tôi</a>
+          </li>
+        </ul>
+
+        <div class="ms-auto d-flex align-items-center">
+          <button class="btn me-4 py-2 px-3 mx-2">
+            <img src="assets/images/note-add.png" alt="" /> Đăng sản phẩm
           </button>
-          <button class="mx-2 border-0 bg-white">
+          <button class="btn py-2 mx-2">
             <img
-              src="assets/images/Frame 427318177.png"
-              alt=""
-              class="img-fluid"
-              style="max-height: 43px"
+              src="assets/images/user-octagon.png"
+              alt="User Logo"
+              class="rounded-circle"
+              width="20"
+              height="20"
             />
           </button>
         </div>
       </div>
     </div>
-  </div>
-  <div class="nav">
-    <div class="w-100 bg-primary-light text-center pt-4">
-      <div><p class="text-title-nav">Danh sách thiết bị nâng cao</p></div>
-      <div class="d-inline-flex mx-2 text-content-nav">
-        <p>Bán/ Aerial Working Platform/</p>
-        <p class="text-content-nav-s">&nbsp;Scissor Lift</p>
-      </div>
-    </div>
-  </div>
+  </nav>
+</header>
