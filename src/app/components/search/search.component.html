@@ -27,7 +27,7 @@
                   alt="search-icon"
                   class="input-icon"
                 />
-                <input class="input p-input" type="text" placeholder="Hà Nội" />
+                <input class="input p-input" type="text" placeholder="Hà Nội" [(ngModel)]="cityName" (change)="change()"/>
               </div>
               <div class="input-wrapper">
                 <img
@@ -58,38 +58,37 @@
           <div class="box2 border mt-3">
             <p class="title-box">Thương hiệu</p>
             <div class="content-box2">
-              <!-- Thay ID cho checkbox để tránh trùng lặp -->
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand1" />
+                <input type="checkbox" id="brand1" [checked]="selectedBrand === 'Caterpillar'" (change)="onCheckboxChange($event, 'Caterpillar')" />
                 <label for="brand1" class="text-checkbox">Caterpillar</label>
               </div>
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand2" />
+                <input type="checkbox" id="brand2" [checked]="selectedBrand === 'Podemcrane'" (change)="onCheckboxChange($event, 'Podemcrane')" />
                 <label for="brand2" class="text-checkbox">Podemcrane</label>
               </div>
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand3" />
+                <input type="checkbox" id="brand3" [checked]="selectedBrand === 'Komatsu'" (change)="onCheckboxChange($event, 'Komatsu')" />
                 <label for="brand3" class="text-checkbox">Komatsu</label>
               </div>
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand4" />
+                <input type="checkbox" id="brand4" [checked]="selectedBrand === 'Hitachi'" (change)="onCheckboxChange($event, 'Hitachi')" />
                 <label for="brand4" class="text-checkbox">Hitachi</label>
               </div>
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand5" />
+                <input type="checkbox" id="brand5" [checked]="selectedBrand === 'Liebherr'" (change)="onCheckboxChange($event, 'Liebherr')" />
                 <label for="brand5" class="text-checkbox">Liebherr</label>
               </div>
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand5" />
-                <label for="brand5" class="text-checkbox">Toyota</label>
+                <input type="checkbox" id="brand6" [checked]="selectedBrand === 'Toyota'" (change)="onCheckboxChange($event, 'Toyota')" />
+                <label for="brand6" class="text-checkbox">Toyota</label>
               </div>
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand5" />
-                <label for="brand5" class="text-checkbox">Samsung</label>
+                <input type="checkbox" id="brand7" [checked]="selectedBrand === 'Samsung'" (change)="onCheckboxChange($event, 'Samsung')" />
+                <label for="brand7" class="text-checkbox">Samsung</label>
               </div>
               <div class="custom-checkbox d-flex align-items-center">
-                <input type="checkbox" id="brand5" />
-                <label for="brand5" class="text-checkbox">Mitsubishi</label>
+                <input type="checkbox" id="brand8" [checked]="selectedBrand === 'Mitsubishi'" (change)="onCheckboxChange($event, 'Mitsubishi')" />
+                <label for="brand8" class="text-checkbox">Mitsubishi</label>
               </div>
             </div>
           </div>
@@ -302,7 +301,7 @@
                   <div class="product-list">
                     <div class="row">
                       <div class="col-12 d-flex border-box-c-12 m-2" *ngFor="let item of data">
-                        <div class="col-4 p-0"><img [src]="item.img ? item.img : defaultImg" alt="" class="img-product w-100" /></div>
+                        <div class="col-4 p-0"><img [src]="item.img ? item.img : defaultImg" alt="" class="img-product w-100 border-anh" /></div>
                         <div class="p-4 col-5">
                           <div><p class="title_product">{{item.product_name}}</p></div>
                           <div class="d-flex"><img src="assets/images/location/vuesax/bold/location.png" alt="" class="location_img" /><p class="text_location mx-2">{{item.city}}</p></div>

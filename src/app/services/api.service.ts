@@ -18,6 +18,9 @@ export class ApiService {
     if (queryParams.keyword) {
       params = params.set('keyword', queryParams.keyword);
     }
+    if (queryParams.brand) {
+      params = params.set('brand', queryParams.brand);
+    }
     if (queryParams.page) {
       params = params.set('page', queryParams.page.toString());
     }

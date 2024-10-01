@@ -33,13 +33,13 @@ interface ApiResponse {
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
-
+  selectedBrand: string = ''; // thương hiệu
+  condition : string = ''; //trạng thái cũ - mới
+  cityName : string = ''; // tên thành phố
   minPrice: number = 0;     // Giá trị nhỏ nhất cho slider
   maxPrice: number = 1000000000;   // Giá trị lớn nhất cho slider
   minValuePrice: number = 0;  // Giá trị khởi tạo cho min
   maxValuePrice : number = 1000000000;  // Giá trị khởi tạo cho max
-
-  
   minYear: number = 1984;     // Giá trị nhỏ nhất cho slider
   maxYear: number = 2024;   // Giá trị lớn nhất cho slider
   minValueYear: number = 1984;  // Giá trị khởi tạo cho min
@@ -71,20 +71,28 @@ export class SearchComponent {
     this.calculatePages();
   }
 
+  change(){
+    console.log(this.cityName)
+  }
+
   onSearch() {
     this.isLoading = true;
-    const queryParams = {
+    const queryParams : any = {
       keyword: this.inputText,
       page: this.currentPage,
     };
 
+    if (this.cityName !== '') {
+      queryParams.city = this.cityName;
+    }
+
     this.router.navigate(['/search'], {
       queryParams: {
         keyword: this.inputText,
+        city : this.cityName,
         page: this.currentPage,
       },
     });
-
     this.apiService
       .searchData(queryParams)
       .pipe(
@@ -93,7 +101,10 @@ export class SearchComponent {
           this.isLoading = false;
           if (error.status === 500) {
             this.errorMessage = 'Đã xảy ra lỗi máy chủ. Vui lòng thử lại sau.';
-          } else {
+          } else if (error.status === 400 ) {
+            this.errorMessage = 'Tham số không hợp lệ, vui lòng nhập lại';
+          }
+            else {
             this.errorMessage = 'Đã xảy ra lỗi. Vui lòng thử lại.';
           }
           return of({ devices: []});
@@ -150,35 +161,40 @@ export class SearchComponent {
 
   onConditionChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-    const condition = selectElement.value;
-    this.callApiWithCondition(condition);
+    this.condition = selectElement.value;
+    this.callApiWithCondition(this.condition);
     let currentUrl = this.router.url;
     const urlParams = new URLSearchParams(currentUrl.split('?')[1]);
-    urlParams.set('condition', condition);
+    urlParams.set('condition', this.condition);
     const newUrl = `${currentUrl.split('?')[0]}?${urlParams.toString()}`;
     this.router.navigateByUrl(newUrl);
   }
-  callApiWithCondition(condition: string) {
-    const queryParams = {
-      condition: condition,
-    };
 
+  callApiWithCondition(condition: string) {
+    const currentUrl = this.router.url;
+    const urlParams = new URLSearchParams(currentUrl.split('?')[1]);
+    const queryParams = {
+      keyword: urlParams.get('keyword') || '', 
+      page: Number(urlParams.get('page')) || 1, 
+      city : urlParams.get('city') || '',
+      brand : urlParams.get('brand') || '',
+      condition: this.condition, 
+    };
+  
     this.apiService.searchData(queryParams).subscribe(
       (response: any) => {
         this.isLoading = false;
         this.data = response.devices;
         this.totalItems = response.count;
         this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-        if (response.count === 0) {
-          this.isNull = true;
-        } else this.isNull = false;
+        this.isNull = response.count === 0;
       },
       (error) => {
         console.error('Error:', error);
+        this.isLoading = false; // Đảm bảo isLoading được cập nhật
       }
     );
   }
-
     // Cập nhật giá trị min khi người dùng tương tác
     updateMinValue() {
       if (this.minValuePrice > this.maxValuePrice) {
@@ -220,5 +236,44 @@ export class SearchComponent {
         const maxPercentYear = ((this.maxValuePrice - this.minPrice) / (this.maxPrice - this.minPrice)) * 100;
         return `background: linear-gradient(to right, #ffc900 ${minPercentYear}%, #ffc900 ${minPercentYear}%, #ffc900 ${maxPercentYear}%, #ffc900 ${maxPercentYear}%);`;
       }
-  
+      onCheckboxChange(event: Event, brand: string) {
+        const isChecked = (event.target as HTMLInputElement).checked;
+    
+        if (isChecked) {
+          this.selectedBrand = brand; 
+        } else {
+          this.selectedBrand = '';
+        }
+        this.callApiWithBrand(this.selectedBrand)
+        let currentUrl = this.router.url;
+        const urlParams = new URLSearchParams(currentUrl.split('?')[1]);
+        urlParams.set('brand', this.selectedBrand);
+        const newUrl = `${currentUrl.split('?')[0]}?${urlParams.toString()}`;
+        this.router.navigateByUrl(newUrl);
+      }
+      callApiWithBrand(brand: string){
+        const currentUrl = this.router.url;
+        const urlParams = new URLSearchParams(currentUrl.split('?')[1]);
+        const queryParams = {
+          keyword: urlParams.get('keyword') || '', 
+          page: Number(urlParams.get('page')) || 1, 
+          condition: urlParams.get('condition') || '', 
+          city : urlParams.get('city') || '',
+          brand : this.selectedBrand
+        };
+        this.apiService.searchData(queryParams).subscribe(
+          (response: any) => {
+            this.isLoading = false;
+            this.data = response.devices;
+            this.totalItems = response.count;
+            this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+            if (response.count === 0) {
+              this.isNull = true;
+            } else this.isNull = false;
+          },
+          (error) => {
+            console.error('Error:', error);
+          }
+        );
+      }
 }
