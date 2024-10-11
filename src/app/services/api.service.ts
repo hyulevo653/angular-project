@@ -2,13 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Paging } from '../interface/paging';
 import { map } from 'rxjs';
+import { ApiConstant } from '../shared/constant/api.constant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-
-  private urlApi : string = " http://localhost:3000/api/product-search"
 
   constructor(private http: HttpClient) { }
 
@@ -37,9 +36,15 @@ export class ApiService {
       params = params.set('max_price', queryParams.max_price.toString());
     }
   
-    return this.http.get(this.urlApi, { params })
+    return this.http.get(ApiConstant.Search, { params })
       .pipe(map((res: any) => {
         return res;
       }));
-    }
+  }
+  getListUser() {
+    return this.http.get(ApiConstant.GetUser)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 }

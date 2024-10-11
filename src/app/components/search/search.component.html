@@ -1,4 +1,7 @@
 <div>
+  <div class="col-12" *ngIf="isLoadingNAV">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
   <app-header></app-header>
   <div class="content">
     <div class="container-fluid">
@@ -27,7 +30,7 @@
                   alt="search-icon"
                   class="input-icon"
                 />
-                <input class="input p-input" type="text" placeholder="Hà Nội" [(ngModel)]="cityName" (change)="change()"/>
+                <input class="input p-input" type="text" placeholder="Hà Nội" [(ngModel)]="cityName" />
               </div>
               <div class="input-wrapper">
                 <img
@@ -215,11 +218,10 @@
             </div>
             <div class="pt-2">
               <div class="box_content_main">
-                <div *ngIf="isLoading" class="loading-indicator">
-                  <div class="loading-spinner">
-                    <p>Loading...</p>
-                  </div>
-                </div>
+                <div *ngIf="isLoading" class="loading-container d-flex justify-content-center align-items-center">
+                  <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+                  <mat-spinner></mat-spinner>
+              </div>
                 <div *ngIf="errorMessage !== ''" class="alert alert-danger">
                   {{ errorMessage }}
                 </div>
@@ -301,7 +303,11 @@
                   <div class="product-list">
                     <div class="row">
                       <div class="col-12 d-flex border-box-c-12 m-2" *ngFor="let item of data">
-                        <div class="col-4 p-0"><img [src]="item.img ? item.img : defaultImg" alt="" class="img-product w-100 border-anh" /></div>
+                        <div class="col-4 p-0"><img [src]="item.img ? item.img : defaultImg" alt="" (dblclick)="openPreview(item.img)" class="img-product w-100 border-anh" /></div>
+                        <div *ngIf="isPreviewOpen" class="modal">
+                          <span class="close" (click)="closePreview()">&times;</span>
+                          <img class="modal-content" [src]="previewImageUrl">
+                        </div>
                         <div class="p-4 col-5">
                           <div><p class="title_product">{{item.product_name}}</p></div>
                           <div class="d-flex"><img src="assets/images/location/vuesax/bold/location.png" alt="" class="location_img" /><p class="text_location mx-2">{{item.city}}</p></div>

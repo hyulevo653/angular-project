@@ -3,13 +3,17 @@ import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { SlickComponent } from '../slick/slick.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { CommonModule, DecimalPipe } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ApiService } from '../../services/api.service';
 import { TableModule } from 'primeng/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthInterceptor } from '../../shared/interceptors/app.interceptor';
+import { AuthGuard } from '../../services/auth.guard';
 
 interface ApiResponse {
   devices: any[];
@@ -27,8 +31,14 @@ interface ApiResponse {
     SlickCarouselModule,
     TableModule,
     FormsModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
   ],
-  providers: [ApiService],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    ApiService,
+    AuthGuard
+  ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
@@ -46,10 +56,10 @@ export class SearchComponent {
   maxValueYear : number = 2024;  // Giá trị khởi tạo cho max
   defaultImg = 'assets/images/anh_product.png';
   public data: any;
-  totalItems: number = 0;
+  totalItems: number = 0; // tổng phần tử response trả về
   isLoading: boolean = false;
+  isLoadingNAV: boolean = true;
   isNull: boolean = false;
-  pagedItems: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 9;
   pages: number[] = [];
@@ -57,11 +67,12 @@ export class SearchComponent {
   errorMessage: string = '';
   isRow : boolean = true;
   isColumn : boolean = false;
+  isPreviewOpen = false;
 
   public inputText: string = '';
+  previewImageUrl: string = '';
 
   constructor(
-    private http: HttpClient,
     private readonly apiService: ApiService,
     private router: Router
   ) {}
@@ -69,11 +80,11 @@ export class SearchComponent {
   ngOnInit() {
     this.onSearch();
     this.calculatePages();
+    setTimeout(() => {
+      this.isLoadingNAV = false;
+    }, 1000);
   }
 
-  change(){
-    console.log(this.cityName)
-  }
 
   onSearch() {
     this.isLoading = true;
@@ -103,8 +114,7 @@ export class SearchComponent {
             this.errorMessage = 'Đã xảy ra lỗi máy chủ. Vui lòng thử lại sau.';
           } else if (error.status === 400 ) {
             this.errorMessage = 'Tham số không hợp lệ, vui lòng nhập lại';
-          }
-            else {
+          } else {
             this.errorMessage = 'Đã xảy ra lỗi. Vui lòng thử lại.';
           }
           return of({ devices: []});
@@ -112,10 +122,10 @@ export class SearchComponent {
       )
       .subscribe((response: any) => {
         this.isLoading = false;
-        this.data = response.devices;
-        this.totalItems = response.count;
+        this.data = response.Products;
+        this.totalItems = response.total;
         this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-        if (response.count === 0) {
+        if (response.total === 0) {
           this.isNull = true;
         } else this.isNull = false;
       });
@@ -275,5 +285,15 @@ export class SearchComponent {
             console.error('Error:', error);
           }
         );
+      }
+
+      openPreview(imageUrl: string) {
+        this.previewImageUrl = imageUrl;
+        this.isPreviewOpen = true;
+        console.log('1');
+      }
+      closePreview() {
+        this.isPreviewOpen = false;
+        this.previewImageUrl = '';
       }
 }

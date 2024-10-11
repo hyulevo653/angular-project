@@ -1,0 +1,113 @@
+<app-header></app-header>
+<div class="row">
+    <div class="col-4 border d-flex justify-content-center align-items-center">
+        <div>
+            <img [src]="imageUrl" alt="Preview" (dblclick)="openPreview(imageUrl)" class="thumbnail" />
+          </div>
+          
+          <div *ngIf="isPreviewOpen" class="modal">
+            <span class="close" (click)="closePreview()">&times;</span>
+            <img class="modal-content" [src]="previewImageUrl">
+          </div>
+    </div>
+    <div class="col-4 border ">
+        <div class="image-container">
+            <img [src]="imageUrl" alt="Preview" draggable="true" (dragstart)="onDragStart($event)" />
+          </div>
+          
+          <div class="dropzone" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+            <p>Thả ảnh vào đây</p>
+          </div>
+          
+          <div class="restricted-zone" (dragover)="onDragOver($event)" (drop)="onDropRestricted($event)">
+            <p>Không được thả vào đây</p>
+          </div>
+    </div>
+    <div class="col-4 border d-flex justify-content-center align-items-center">
+        <div class="image-container" *ngIf="imageUrlXoa">
+            <span class="close" (click)="removeImage()">&times;</span>
+            <img [src]="imageUrlXoa" alt="Preview" class="image-preview" />
+          </div>
+    </div>
+    <div class="col-4 border d-flex justify-content-center align-items-center">
+        <div class="image-container">
+            <img [src]="imageUrl" alt="Preview" class="image-preview" />
+            <span class="zoom-icon"><span nz-icon nzType="zoom-in" nzTheme="outline"></span></span> 
+          </div>
+    </div>
+    <div class="col-4 border d-flex justify-content-center align-items-center">
+        <button class="custom-button">Click me</button>
+    </div>
+    <div class="col-4 border d-flex justify-content-center align-items-center ">
+        <form [formGroup]="myForm" class="">
+            <div>
+              <label for="username " class="w-100">Username:</label>
+              <input id="username" formControlName="username" #usernameInput (drop)="onDragOver($event)" 
+              (dragover)="onDragOver($event)"/>
+              <small *ngIf="myForm.controls['username'].hasError('required') && myForm.controls['username'].dirty" class="p-invalid text-danger">
+                Vui lòng nhập username.
+              </small>
+            </div>
+            <div>
+              <label for="email"  class="w-100">Email:</label>
+              <input id="email" type="text" formControlName="email" pInputText minlength="9" maxlength="50" required #emailInput (drop)="onDragOver($event)" 
+              (dragover)="onDragOver($event)"  />
+              
+              <small *ngIf="myForm.controls['email'].hasError('required') && myForm.controls['email'].dirty" class="p-invalid text-danger">
+                Vui lòng nhập email.
+              </small>
+              <small *ngIf="myForm.controls['email'].hasError('minlength') && myForm.controls['email'].dirty" class="p-invalid text-danger">
+                Email phải tối thiểu 9 kí tự.
+              </small>
+              <small *ngIf="myForm.controls['email'].hasError('maxlength') && myForm.controls['email'].dirty" class="p-invalid text-danger">
+                Email chỉ được tối đa 50 kí tự.
+              </small>
+              <small *ngIf="myForm.controls['email'].hasError('email') && myForm.controls['email'].dirty" class="p-invalid text-danger">
+                Địa chỉ email không hợp lệ.
+              </small>
+            </div>
+            
+            <button type="submit" class="mt-2" (click)="onSubmit()">Submit</button>
+          </form>
+    </div>
+    <div class="col-4 border d-flex justify-content-center align-items-center">
+        <div class="otp-container">
+            <input type="text" maxlength="1" (input)="onInput($event, 0)" #otp0>
+            <input type="text" maxlength="1" (input)="onInput($event, 1)" #otp1>
+            <input type="text" maxlength="1" (input)="onInput($event, 2)" #otp2>
+            <input type="text" maxlength="1" (input)="onInput($event, 3)" #otp3>
+            <input type="text" maxlength="1" (input)="onInput($event, 4)" #otp4>
+            <input type="text" maxlength="1" (input)="onInput($event, 5)" #otp5>
+            <input type="text" maxlength="1" (input)="onInput($event, 6)" #otp6>
+            <input type="text" maxlength="1" (input)="onInput($event, 7)" #otp7>
+        </div>
+    </div>
+    <div class="col-4 border d-flex justify-content-center align-items-center">
+        <div *ngIf="isLoading" class="loading-container">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+    <div class="col-4 border  d-flex justify-content-center align-items-center p-2">
+        <div class="p-2">
+            <a [href]="'tel:' + phoneNumber">{{ phoneNumber }}</a>
+        </div>
+        <div class="p-2">
+            <a [href]="'mailto:' + emailAddress">{{ emailAddress }}</a>
+        </div>
+    </div>
+    <div class="col-12">
+      <div class="image-container d-flex justify-content-center">
+        <div 
+          *ngFor="let image of images; let i = index" 
+          class="draggable-image" 
+          draggable="true"
+          (dragstart)="onChangeImg($event, i)"
+          (dragover)="onDragOver($event)"
+          (drop)="onDropImg($event, i)">
+          <img [src]="image" alt="Image {{i + 1}}">
+        </div>
+      </div>
+    </div>
+</div>
+<app-footer></app-footer>
